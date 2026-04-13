@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using MVCCinemaProgramme.Data;
+using MVCCinemaProgramme.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MVCCinemaProgramme.Data;
-using MVCCinemaProgramme.Models;
 
 namespace MVCCinemaProgramme.Controllers
 {
@@ -69,20 +71,26 @@ namespace MVCCinemaProgramme.Controllers
             return View(seat);
         }
 
-        // GET: Seats/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var seat = await _context.Seat.FindAsync(id);
-            if (seat == null)
+
+
+
+        // GET: Seats/Edit/5
+        public async Task<IActionResult> Edit(int? id, int? programmeId)
+        {
+            if (id == null || programmeId == null) { return NotFound(); }
+
+            var seat = await _context.Seat.Include(s=>s.Hall).FirstOrDefaultAsync(s=>s.Id == id);
+            if (seat == null) { return NotFound(); }
+
+            var screening = await _context.Programme.Include(p=>p.Movie).AsNoTracking().FirstOrDefaultAsync(p=>p.Id == programmeId);
+
+            if (screening != null)
             {
-                return NotFound();
+                ViewBag.MovieTitle = screening.Movie.Title;
+                ViewBag.Price = screening.Movie.TicketPrice;
+                ViewBag.Begin = screening.Begin;
             }
-            ViewData["HallId"] = new SelectList(_context.Hall, "Id", "Id", seat.HallId);
             return View(seat);
         }
 
@@ -91,7 +99,7 @@ namespace MVCCinemaProgramme.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,Taken,HallId")] Seat seat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,Taken,HallId")] Seat seat, string email, int? programmeId)
         {
             if (id != seat.Id)
             {
@@ -102,6 +110,11 @@ namespace MVCCinemaProgramme.Controllers
             {
                 try
                 {
+                    var seatData = await _context.Seat.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
+                    if (seatData == null) { return NotFound(); }
+                    seat.Number = seatData.Number;
+                    seat.HallId = seatData.HallId;
+                    seat.Taken = true;
                     _context.Update(seat);
                     await _context.SaveChangesAsync();
                 }
@@ -116,11 +129,35 @@ namespace MVCCinemaProgramme.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("confirmationScreen", "Seat", new { id = seat.Id, programmeId = programmeId });
             }
-            ViewData["HallId"] = new SelectList(_context.Hall, "Id", "Id", seat.HallId);
             return View(seat);
         }
+
+
+        public async Task<IActionResult> confirmationScreen(int? id, int? programmeId)
+        {
+            if (id == null || programmeId == null) return NotFound();
+            var screening = await _context.Programme.Include(p => p.Movie).AsNoTracking().FirstOrDefaultAsync(p => p.Id == programmeId);
+            var seat = await _context.Seat.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
+
+            if (screening == null || seat == null)
+            {
+                return NotFound();
+            }
+
+                ViewBag.MovieTitle = screening.Movie.Title;
+                ViewBag.Price = screening.Movie.TicketPrice;
+                ViewBag.Begin = screening.Begin;
+                ViewBag.Number = seat.Number;
+                ViewBag.HallId = seat.HallId;
+
+            return View();
+        }
+
+
+
+
 
         // GET: Seats/Delete/5
         public async Task<IActionResult> Delete(int? id)

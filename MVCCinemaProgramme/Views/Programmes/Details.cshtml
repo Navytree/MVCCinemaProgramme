@@ -56,7 +56,7 @@
     <dl>
         <dt>Reserve seat</dt>
         <dd>
-            <a asp-controller="Halls" asp-action="Details" asp-route-id="@Model.HallId">Choose a seat</a>
+            <a asp-controller="Halls" asp-action="Details" asp-route-id="@Model.HallId" asp-route-programmeId="@Model.Id">Choose a seat</a>
         </dd>
     </dl>
 </div>

@@ -1,33 +1,51 @@
 ﻿@model MVCCinemaProgramme.Models.Seat
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Buy ticket";
 }
 
-<h1>Edit</h1>
+<h1>Buy ticket</h1>
 
-<h4>Seat</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
-                <label asp-for="Number" class="control-label"></label>
-                <input asp-for="Number" class="form-control" />
-                <span asp-validation-for="Number" class="text-danger"></span>
+                <input type="hidden" name="programmeId" value="@ViewBag.ProgrammeId" />
+                <dl class="row">
+                    <dt class="col-sm-2">Movie Title</dt>
+                    <dd class="col-sm-10">@ViewBag.MovieTitle</dd>
+
+                    <dt class="col-sm-2">Price</dt>
+                    <dd class="col-sm-10">@ViewBag.Price</dd>
+
+                    <dt class="col-sm-2">Starts at</dt>
+                    <dd class="col-sm-10">@ViewBag.Begin</dd>
+
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Hall.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Hall.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Number)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Number)
+                    </dd>
+
+                    <dt class="col-sm-2">
+                        Please put down the email we should send ticket to
+                    </dt>
+                    <dd class="col-sm-10">
+                        <input type="email" id="email" name="email" required />
+                    </dd>
+                </dl>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Taken" /> @Html.DisplayNameFor(model => model.Taken)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="HallId" class="control-label"></label>
-                <select asp-for="HallId" class="form-control" asp-items="ViewBag.HallId"></select>
-                <span asp-validation-for="HallId" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -36,7 +54,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Programmes" asp-action="Details" class="btn btn-secondary">Cancel and go back</a>
 </div>
 
 @section Scripts {

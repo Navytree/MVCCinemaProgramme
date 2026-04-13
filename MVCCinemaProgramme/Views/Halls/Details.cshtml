@@ -25,7 +25,8 @@
                 }
                 else
                 {
-                    <a asp-controller="Seats" asp-action="Edit" asp-route-id="@seat.Id" class="btn btn-light btn-sm mt-1">Reserve</a>
+                    <a asp-controller="Seats" asp-action="Edit" asp-route-id="@seat.Id" asp-route-programmeId="@ViewBag.ProgrammeId"
+                        class="btn btn-light btn-sm mt-1">Reserve</a>
                 }
             </div>
         </div>

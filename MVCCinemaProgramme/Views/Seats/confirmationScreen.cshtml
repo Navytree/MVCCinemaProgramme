@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Success!";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4 text-success">Ticket Confirmed!</h1>
+    <p class="lead">Thank you for your purchase.</p>
+    <hr />
+    <div class="card mx-auto" style="max-width: 400px;">
+        <div class="card-body text-start">
+            <h5 class="card-title text-center">Your Ticket Details</h5>
+            <p><strong>Movie:</strong> @ViewBag.MovieTitle</p>
+            <p><strong>Date/Time:</strong> @ViewBag.Begin</p>
+            <p><strong>Hall:</strong> @ViewBag.HallId</p>
+            <p><strong>Seat Number:</strong> @ViewBag.Number</p>
+            <p class="text-muted small text-center mt-3">Information sent to your email.</p>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a asp-controller="Programmes" asp-action="Index" class="btn btn-primary">Back to Programme</a>
+    </div>
+</div>
