@@ -1,0 +1,39 @@
+﻿@model MVCCinemaProgramme.Models.Hall
+
+@{
+    ViewData["Title"] = "Choose a seat";
+}
+
+<h1>Choose a seat</h1>
+
+<div>
+    <h4>Seats in @Model.Name hall</h4>
+    <hr />
+
+<div class="d-flex flex-wrap gap-3">
+@foreach (var seat in Model.Seats.OrderBy(s=>s.Number))
+    {  
+        string colorClass = seat.Taken ? "bg-danger" : "bg-success";
+        string textColor = "text-white";
+
+        <div class="card @colorClass @textColor text-center" style="width: 80px;">
+            <div class="card-body p-2">
+                <h5 class="card-title">#@seat.Number</h5>
+            @if (seat.Taken)
+                {
+                    <span class="badge bg-secondary">Taken</span>
+                }
+                else
+                {
+                    <a asp-controller="Seats" asp-action="Edit" asp-route-id="@seat.Id" class="btn btn-light btn-sm mt-1">Reserve</a>
+                }
+            </div>
+        </div>
+    }
+
+
+</div>
+</div>
+<div>
+    <a asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+</div>

@@ -14,9 +14,9 @@ namespace MVCCinemaProgramme.Models
         [ForeignKey("HallId")]
         public virtual Hall? Hall { get; set; }
 
-        [Display(Name = "Beggins at")]
+        [Display(Name = "Begins at")]
         [DataType(DataType.DateTime)]
-        public DateTime Beggin { get; set; }
+        public DateTime Begin { get; set; }
 
         [Display(Name = "Ends at")]
         [DataType(DataType.DateTime)]

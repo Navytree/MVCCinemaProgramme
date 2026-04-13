@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MVCCinemaProgramme.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MVCCinemaProgrammeContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MVCCinemaProgrammeContext") ?? throw new InvalidOperationException("Connection string 'MVCCinemaProgrammeContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
