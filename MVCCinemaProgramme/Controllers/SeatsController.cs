@@ -129,13 +129,13 @@ namespace MVCCinemaProgramme.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("confirmationScreen", "Seat", new { id = seat.Id, programmeId = programmeId });
+                return RedirectToAction("Processing", new { id = seat.Id, programmeId = programmeId });
             }
             return View(seat);
         }
 
 
-        public async Task<IActionResult> confirmationScreen(int? id, int? programmeId)
+        public async Task<IActionResult> ConfirmationScreen(int? id, int? programmeId)
         {
             if (id == null || programmeId == null) return NotFound();
             var screening = await _context.Programme.Include(p => p.Movie).AsNoTracking().FirstOrDefaultAsync(p => p.Id == programmeId);
@@ -155,7 +155,12 @@ namespace MVCCinemaProgramme.Controllers
             return View();
         }
 
-
+        public IActionResult Processing(int id, int? programmeId)
+        {
+            ViewBag.Id = id;
+            ViewBag.ProgrammeId = programmeId;
+            return View();
+        }
 
 
 

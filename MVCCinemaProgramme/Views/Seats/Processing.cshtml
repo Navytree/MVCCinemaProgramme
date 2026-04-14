@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Processing Payment";
+}
+
+<div class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <h2 class="mt-4">Processing your payment...</h2>
+    <p>Please do not refresh the page.</p>
+</div>
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("confirmationScreen", "Seats", new { id = ViewBag.Id, programmeId = ViewBag.ProgrammeId })';
+        }, 5000);
+    </script>
+}

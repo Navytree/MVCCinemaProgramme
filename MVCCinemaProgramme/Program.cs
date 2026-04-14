@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MVCCinemaProgramme.Data;
+using MVCCinemaProgramme.Models;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MVCCinemaProgrammeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MVCCinemaProgrammeContext") ?? throw new InvalidOperationException("Connection string 'MVCCinemaProgrammeContext' not found.")));
@@ -17,6 +18,15 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+}
+
+app.Run();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
