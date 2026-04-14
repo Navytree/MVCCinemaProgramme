@@ -11,10 +11,17 @@
     <p>Please do not refresh the page.</p>
 </div>
 
+
+
 @section Scripts {
     <script>
+        const seatId = '@ViewBag.Id';
+        const progId = '@ViewBag.ProgrammeId';
+
+        console.log("Przekierowanie dla Seat:", seatId, "Programme:", progId);
+
         setTimeout(function () {
-            window.location.href = '@Url.Action("confirmationScreen", "Seats", new { id = ViewBag.Id, programmeId = ViewBag.ProgrammeId })';
-        }, 5000);
+            window.location.href = '/Seats/confirmationScreen/' + seatId + '?programmeId=' + progId;
+        }, 1000);
     </script>
 }

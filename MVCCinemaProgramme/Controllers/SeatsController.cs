@@ -87,6 +87,7 @@ namespace MVCCinemaProgramme.Controllers
 
             if (screening != null)
             {
+                ViewBag.ProgrammeId = programmeId;
                 ViewBag.MovieTitle = screening.Movie.Title;
                 ViewBag.Price = screening.Movie.TicketPrice;
                 ViewBag.Begin = screening.Begin;
@@ -131,9 +132,16 @@ namespace MVCCinemaProgramme.Controllers
                 }
                 return RedirectToAction("Processing", new { id = seat.Id, programmeId = programmeId });
             }
+            ViewBag.ProgrammeId = programmeId;
             return View(seat);
         }
 
+        public IActionResult Processing(int id, int? programmeId)
+        {
+            ViewBag.Id = id;
+            ViewBag.ProgrammeId = programmeId;
+            return View();
+        }
 
         public async Task<IActionResult> ConfirmationScreen(int? id, int? programmeId)
         {
@@ -155,12 +163,7 @@ namespace MVCCinemaProgramme.Controllers
             return View();
         }
 
-        public IActionResult Processing(int id, int? programmeId)
-        {
-            ViewBag.Id = id;
-            ViewBag.ProgrammeId = programmeId;
-            return View();
-        }
+
 
 
 

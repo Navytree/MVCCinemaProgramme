@@ -25,7 +25,7 @@ public static class SeedData
             var hall1 = new Hall { Name = "1A" };
             var hall2 = new Hall { Name = "2A" };
             var hall3 = new Hall { Name = "3A" };             
-            context.Hall.AddRange();
+            context.Hall.AddRange(hall1, hall2, hall3);
             context.SaveChanges();
 
 
@@ -59,7 +59,6 @@ public static class SeedData
                     End = DateTime.Now.AddDays(4).Date.AddHours(15)
                 }
             );
-
             context.SaveChanges();
 
 

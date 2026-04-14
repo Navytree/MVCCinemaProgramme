@@ -45,6 +45,8 @@ namespace MVCCinemaProgramme.Controllers
                 .Include(p => p.Hall)
                 .ThenInclude(p => p.Seats)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            ViewBag.ProgrammeId = id;
+
             if (programme == null)
             {
                 return NotFound();
@@ -74,7 +76,7 @@ namespace MVCCinemaProgramme.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MovieId,HallId,Beggin,End")] Programme programme)
+        public async Task<IActionResult> Create([Bind("Id,MovieId,HallId,Begin,End")] Programme programme)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +112,7 @@ namespace MVCCinemaProgramme.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,HallId,Beggin,End")] Programme programme)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,HallId,Begin,End")] Programme programme)
         {
             if (id != programme.Id)
             {

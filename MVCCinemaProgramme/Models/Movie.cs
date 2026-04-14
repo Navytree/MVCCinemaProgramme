@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCCinemaProgramme.Models
 {
@@ -11,6 +12,7 @@ namespace MVCCinemaProgramme.Models
 
         [Display(Name = "Ticket Price")]
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TicketPrice { get; set; }
 
     }

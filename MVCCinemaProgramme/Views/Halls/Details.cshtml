@@ -36,5 +36,5 @@
 </div>
 </div>
 <div>
-    <a asp-controller="Programmes" asp-action="Details" class="btn btn-secondary">Cancel and go back</a>
+    <a asp-controller="Programmes" asp-action="Details" asp-route-id="@Model.Id" asp-route-programmeId="@ViewBag.ProgrammeId" class=" btn btn-secondary">Cancel and go back</a>
 </div>
