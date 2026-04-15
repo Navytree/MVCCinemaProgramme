@@ -75,7 +75,7 @@ namespace MVCCinemaProgramme.Controllers
 
 
 
-        // GET: Seats/Edit/5
+        // GET: Seats/Edit/5 aaaaaaaaaaaaaaaaaaaaaaaaa
         public async Task<IActionResult> Edit(int? id, int? programmeId)
         {
             if (id == null || programmeId == null) { return NotFound(); }
@@ -115,7 +115,6 @@ namespace MVCCinemaProgramme.Controllers
                     if (seatData == null) { return NotFound(); }
                     seat.Number = seatData.Number;
                     seat.HallId = seatData.HallId;
-                    seat.Taken = true;
                     _context.Update(seat);
                     await _context.SaveChangesAsync();
                 }

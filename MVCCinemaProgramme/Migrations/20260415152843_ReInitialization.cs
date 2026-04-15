@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MVCCinemaProgramme.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedPrecisionToMovie : Migration
+    public partial class ReInitialization : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,7 +47,6 @@ namespace MVCCinemaProgramme.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<int>(type: "int", nullable: false),
-                    Taken = table.Column<bool>(type: "bit", nullable: false),
                     HallId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -89,6 +88,33 @@ namespace MVCCinemaProgramme.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Ticket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SeatId = table.Column<int>(type: "int", nullable: false),
+                    ProgrammeId = table.Column<int>(type: "int", nullable: false),
+                    CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PurchaseDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ticket", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ticket_Programme_ProgrammeId",
+                        column: x => x.ProgrammeId,
+                        principalTable: "Programme",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Ticket_Seat_SeatId",
+                        column: x => x.SeatId,
+                        principalTable: "Seat",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Programme_HallId",
                 table: "Programme",
@@ -103,11 +129,24 @@ namespace MVCCinemaProgramme.Migrations
                 name: "IX_Seat_HallId",
                 table: "Seat",
                 column: "HallId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ticket_ProgrammeId",
+                table: "Ticket",
+                column: "ProgrammeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ticket_SeatId",
+                table: "Ticket",
+                column: "SeatId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Ticket");
+
             migrationBuilder.DropTable(
                 name: "Programme");
 

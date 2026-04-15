@@ -20,14 +20,29 @@ namespace MVCCinemaProgramme.Controllers
         }
 
         // GET: Programmes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTitle, string searchGenre, int week = 0)
         {
 
-            var startDate = DateTime.Now;
-            var endDate = startDate.AddDays(7);
+            int diff = DateTime.Today.DayOfWeek - DayOfWeek.Monday;
+            if (diff < 0) diff += 7;
+            DateTime startOfCurrentWeek = DateTime.Today.AddDays(-diff);
+            DateTime startOfSelectedWeek = startOfCurrentWeek.AddDays(week * 7);
+            DateTime endOfSelectedWeek = startOfSelectedWeek.AddDays(7);
 
-            var programmes = await _context.Programme.Include(p => p.Hall).Include(p => p.Movie)
-                .Where(p => p.Begin >= startDate && p.Begin <= endDate).OrderBy(p => p.Begin).ToListAsync();
+            var query = _context.Programme.Include(p => p.Hall).Include(p => p.Movie)
+                .Where(p => p.Begin >= startOfSelectedWeek && p.Begin < endOfSelectedWeek);
+
+            if (!string.IsNullOrEmpty(searchTitle))
+            { query = query.Where(p => p.Movie.Title.Contains(searchTitle)); }
+
+            if (!string.IsNullOrEmpty(searchGenre))
+            { query = query.Where(p => p.Movie.Genre.Contains(searchGenre));}
+
+            var programmes = await query.OrderBy(p => p.Begin).ToListAsync();
+
+            ViewBag.CurrentTitle = searchTitle;
+            ViewBag.CurrentGenre = searchGenre;
+            ViewBag.CurrentWeek = week;
 
             return View(programmes);
         }

@@ -5,7 +5,26 @@
 }
 
 <h1>Cinema's Programme</h1>
+<form asp-action="Index" method="get" class="mb-4 p-3 bg-light rounded shadow-sm">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <input type="text" name="searchTitle" value="@ViewBag.CurrentTitle"
+                   class="form-control" placeholder="Search by title..." />
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="searchGenre" value="@ViewBag.CurrentGenre"
+                   class="form-control" placeholder="Search by genre..." />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-outline-secondary w-100">Clear</a>
+        </div>
+    </div>
 
+    <input type="hidden" name="week" value="@ViewBag.CurrentWeek" />
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -46,3 +65,22 @@
 }
     </tbody>
 </table>
+<div class="btn-group mb-4" role="group">
+    @for (int i = 0; i < 4; i++)
+    {
+        <a asp-action="Index" asp-route-week="@i"
+           class="btn @(ViewBag.CurrentWeek == i ? "btn-primary" : "btn-outline-primary")">
+            Week @(i + 1)
+        </a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">No screenings scheduled for this week. Check back later!</div>
+}
+else
+{
+    <table class="table">
+    </table>
+}

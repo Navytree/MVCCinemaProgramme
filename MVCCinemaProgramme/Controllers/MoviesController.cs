@@ -20,9 +20,24 @@ namespace MVCCinemaProgramme.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTitle, string searchGenre, decimal? maxPrice)
         {
-            return View(await _context.Movie.ToListAsync());
+            var query = _context.Movie.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTitle))
+            { query = query.Where(m => m.Title.Contains(searchTitle)); }
+
+            if (!string.IsNullOrEmpty(searchGenre))
+            { query = query.Where(m => m.Genre.Contains(searchGenre)); }
+
+            if (maxPrice.HasValue)
+            { query = query.Where(m => m.TicketPrice <= maxPrice.Value);}
+            var movies = await query.ToListAsync();
+
+            ViewBag.CurrentTitle = searchTitle;
+            ViewBag.CurrentGenre = searchGenre;
+            ViewBag.CurrentMaxPrice = maxPrice;
+            return View(movies);
         }
 
         // GET: Movies/Details/5

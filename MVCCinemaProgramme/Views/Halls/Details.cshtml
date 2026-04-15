@@ -13,27 +13,25 @@
 <div class="d-flex flex-wrap gap-3">
 @foreach (var seat in Model.Seats.OrderBy(s=>s.Number))
     {  
-        string colorClass = seat.Taken ? "bg-danger" : "bg-success";
-        string textColor = "text-white";
+        bool isTaken = ((List<int>)ViewBag.ReservedSeats).Contains(seat.Id);
+            string colorClass = isTaken ? "bg-danger" : "bg-success";
+            string textColor = "text-white";
 
-        <div class="card @colorClass @textColor text-center" style="width: 80px;">
-            <div class="card-body p-2">
+            <div class="card @colorClass @textColor text-center" style="width: 80px;">
                 <h5 class="card-title">#@seat.Number</h5>
-            @if (seat.Taken)
+                @if (!isTaken)
                 {
-                    <span class="badge bg-secondary">Taken</span>
+                    <a asp-controller="Tickets" asp-action="Create" asp-route-id="@seat.Id" asp-route-programmeId="@ViewBag.ProgrammeId"
+                        class="btn btn-light btn-sm mt-1">Reserve</a>
                 }
                 else
                 {
-                    <a asp-controller="Seats" asp-action="Edit" asp-route-id="@seat.Id" asp-route-programmeId="@ViewBag.ProgrammeId"
-                        class="btn btn-light btn-sm mt-1">Reserve</a>
+                    <span class="badge bg-secondary">Taken</span>
                 }
             </div>
-        </div>
     }
-
-
 </div>
+
 </div>
 <div>
     <a asp-controller="Programmes" asp-action="Details" asp-route-id="@Model.Id" asp-route-programmeId="@ViewBag.ProgrammeId" class=" btn btn-secondary">Cancel and go back</a>
