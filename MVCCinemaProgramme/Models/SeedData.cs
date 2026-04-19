@@ -11,10 +11,7 @@ public static class SeedData
             serviceProvider.GetRequiredService<
                 DbContextOptions<MVCCinemaProgrammeContext>>()))
         {
-            if (context.Movie.Any() || context.Hall.Any())
-            {
-                return;
-            }
+            if (context.Movie.Any()) return;
 
             var movie1 = new Movie { Title = "Star Wars: A New Hope", Genre = "Sci-Fi", Rating = "PG", TicketPrice = 25.00M };
             var movie2 = new Movie { Title = "Monty Python: Holy Grail", Genre = "Comedy", Rating = "PG", TicketPrice = 0.00M };
@@ -30,9 +27,9 @@ public static class SeedData
 
 
             for (int i = 1; i <= 20; i++) {
-                context.Seat.Add(new Seat { Number = i, Taken = false, HallId = hall1.Id });
-                context.Seat.Add(new Seat { Number = i, Taken = false, HallId = hall2.Id });
-                context.Seat.Add(new Seat { Number = i, Taken = false, HallId = hall3.Id });
+                context.Seat.Add(new Seat { Number = i, HallId = hall1.Id });
+                context.Seat.Add(new Seat { Number = i, HallId = hall2.Id });
+                context.Seat.Add(new Seat { Number = i, HallId = hall3.Id });
             }
             context.SaveChanges();
 

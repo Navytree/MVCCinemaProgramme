@@ -108,14 +108,41 @@ namespace MVCCinemaProgramme.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Taken")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("HallId");
 
                     b.ToTable("Seat");
+                });
+
+            modelBuilder.Entity("MVCCinemaProgramme.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CustomerEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProgrammeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgrammeId");
+
+                    b.HasIndex("SeatId");
+
+                    b.ToTable("Ticket");
                 });
 
             modelBuilder.Entity("MVCCinemaProgramme.Models.Programme", b =>
@@ -146,6 +173,25 @@ namespace MVCCinemaProgramme.Migrations
                         .IsRequired();
 
                     b.Navigation("Hall");
+                });
+
+            modelBuilder.Entity("MVCCinemaProgramme.Models.Ticket", b =>
+                {
+                    b.HasOne("MVCCinemaProgramme.Models.Programme", "Programme")
+                        .WithMany()
+                        .HasForeignKey("ProgrammeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MVCCinemaProgramme.Models.Seat", "Seat")
+                        .WithMany()
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Programme");
+
+                    b.Navigation("Seat");
                 });
 
             modelBuilder.Entity("MVCCinemaProgramme.Models.Hall", b =>

@@ -36,13 +36,17 @@ namespace MVCCinemaProgramme.Controllers
                 return NotFound();
             }
 
-            var hall = await _context.Hall.Include(h => h.Seats)
-                .FirstOrDefaultAsync(m => m.Id == id);
+
+            var hall = await _context.Hall.Include(h => h.Seats).FirstOrDefaultAsync(m => m.Id == id);
+            var reservedSeatIds = await _context.Ticket.Where(t => t.ProgrammeId == programmeId)
+                .Select(t => t.SeatId).ToListAsync();
+
             if (hall == null)
             {
                 return NotFound();
             }
 
+            ViewBag.ReservedSeats = reservedSeatIds;
             ViewBag.ProgrammeId = programmeId;
             return View(hall);
         }

@@ -19,6 +19,7 @@ namespace MVCCinemaProgramme.Data
         public DbSet<MVCCinemaProgramme.Models.Programme> Programme { get; set; } = default!;
         public DbSet<MVCCinemaProgramme.Models.Hall> Hall { get; set; } = default!;
         public DbSet<MVCCinemaProgramme.Models.Seat> Seat { get; set; } = default!;
+        public DbSet<MVCCinemaProgramme.Models.Ticket> Ticket { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +29,19 @@ namespace MVCCinemaProgramme.Data
                 .HasMany(e => e.Seats)
                 .WithOne(e => e.Hall)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Seat)
+                .WithMany()
+                .HasForeignKey(t => t.SeatId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Programme)
+                .WithMany()
+                .HasForeignKey(t => t.ProgrammeId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
 

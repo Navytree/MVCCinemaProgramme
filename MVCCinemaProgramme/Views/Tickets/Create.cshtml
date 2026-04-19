@@ -1,4 +1,4 @@
-﻿@model MVCCinemaProgramme.Models.Seat
+﻿@model MVCCinemaProgramme.Models.Ticket
 
 @{
     ViewData["Title"] = "Buy ticket";
@@ -8,9 +8,10 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="text" name="programmeId" value="@ViewBag.ProgrammeId" />
+            <input type="hidden" name="programmeId" value="@ViewBag.ProgrammeId" />
+            <input type="hidden" name="seatId" value="@ViewBag.SeatId" />
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group">
@@ -25,24 +26,24 @@
                     <dd class="col-sm-10">@ViewBag.Begin</dd>
 
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Hall.Name)
+                        @Html.DisplayNameFor(model => model.Seat.Hall.Name)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Hall.Name)
+                        @Html.DisplayFor(model => model.Seat.Hall.Name)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Number)
+                        @Html.DisplayNameFor(model => model.Seat.Number)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Number)
+                        @Html.DisplayFor(model => model.Seat.Number)
                     </dd>
 
                     <dt class="col-sm-2">
                         Please put down the email we should send ticket to
                     </dt>
                     <dd class="col-sm-10">
-                        <input type="email" id="email" name="email" class="form-control" required placeholder="example@mail.com" />
-                        <span class="text-danger"></span>
+                        <input asp-for="CustomerEmail" type="email" name="CustomerEmail" class="form-control" required placeholder="example@mail.com" />
+                        <span asp-validation-for="CustomerEmail" class="text-danger"></span>
                     </dd>
 
                     <dt class="col-sm-2">Payment Method</dt>
@@ -76,5 +77,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

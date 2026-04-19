@@ -5,10 +5,33 @@
 }
 
 <h1>Movies playing in our cinema</h1>
+<form asp-action="Index" method="get" class="mb-4 p-3 bg-light rounded shadow-sm">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <input type="text" name="searchTitle" value="@ViewBag.CurrentTitle"
+                   class="form-control" placeholder="Search by title..." />
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="searchGenre" value="@ViewBag.CurrentGenre"
+                   class="form-control" placeholder="Search by genre..." />
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" name="maxPrice" value="@ViewBag.CurrentMaxPrice"
+                       class="form-control" step="0.01" min="0" placeholder="Max price e.g. 25.00" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-outline-secondary w-100">Clear</a>
+        </div>
+    </div>
 
-@* <p>
-    <a asp-action="Create">Create New</a>
-</p> *@
+    <input type="hidden" name="week" value="@ViewBag.CurrentWeek" />
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -42,11 +65,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TicketPrice)
             </td>
-@*             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td> *@
         </tr>
 }
     </tbody>
